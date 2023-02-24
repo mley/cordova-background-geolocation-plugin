@@ -6,6 +6,7 @@ import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 
@@ -22,13 +23,22 @@ public class LocationManager {
     private Context mContext;
     private static LocationManager mLocationManager;
 
-    public static final String[] PERMISSIONS = {
+    public static final String[] PERMISSIONS_21 = {
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION
     };
 
+    public static final String[] PERMISSIONS_29 = {
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACTIVITY_RECOGNITION
+    };
+
+    private String[] permissions;
+
     private LocationManager(Context context) {
         mContext = context;
+        this.permissions = android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q ? PERMISSIONS_29 : PERMISSIONS_21;
     }
 
     public class PermissionDeniedException extends Exception {}
@@ -44,7 +54,7 @@ public class LocationManager {
         final Promise<Location> promise = Promises.promise();
 
         PermissionManager permissionManager = PermissionManager.getInstance(mContext);
-        permissionManager.checkPermissions(Arrays.asList(PERMISSIONS), new PermissionManager.PermissionRequestListener() {
+        permissionManager.checkPermissions(Arrays.asList(permissions), new PermissionManager.PermissionRequestListener() {
             @Override
             public void onPermissionGranted() {
                 try {

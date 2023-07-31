@@ -94,7 +94,7 @@ public abstract class AbstractLocationProvider implements LocationProvider {
      */
     protected void handleLocation (Location location) {
         playDebugTone(Tone.BEEP);
-        if (mDelegate != null) {
+        if (mDelegate != null && location != null) {
             BackgroundLocation bgLocation = new BackgroundLocation(PROVIDER_ID, location);
             bgLocation.setMockLocationsEnabled(hasMockLocationsEnabled());
             mDelegate.onLocation(bgLocation);
@@ -109,7 +109,7 @@ public abstract class AbstractLocationProvider implements LocationProvider {
      */
     protected void handleStationary (Location location, float radius) {
         playDebugTone(Tone.LONG_BEEP);
-        if (mDelegate != null) {
+        if (mDelegate != null && location != null) {
             BackgroundLocation bgLocation = new BackgroundLocation(PROVIDER_ID, location);
             bgLocation.setRadius(radius);
             bgLocation.setMockLocationsEnabled(hasMockLocationsEnabled());
@@ -124,7 +124,7 @@ public abstract class AbstractLocationProvider implements LocationProvider {
      */
     protected void handleStationary (Location location) {
         playDebugTone(Tone.LONG_BEEP);
-        if (mDelegate != null) {
+        if (mDelegate != null && location != null) {
             BackgroundLocation bgLocation = new BackgroundLocation(PROVIDER_ID, location);
             bgLocation.setMockLocationsEnabled(hasMockLocationsEnabled());
             mDelegate.onStationary(bgLocation);

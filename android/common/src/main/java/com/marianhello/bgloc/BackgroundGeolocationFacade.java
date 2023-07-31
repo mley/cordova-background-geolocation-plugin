@@ -52,18 +52,9 @@ public class BackgroundGeolocationFacade {
     public static final int AUTHORIZATION_AUTHORIZED = 1;
     public static final int AUTHORIZATION_DENIED = 0;
 
-    public static final String[] PERMISSIONS_21 = {
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
-    };
 
-    public static final String[] PERMISSIONS_29 = {
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACTIVITY_RECOGNITION
-    };
 
-    private String[] permissions;
+    private final String[] permissions = LocationManager.getRequiredPermissions();
 
     private boolean mServiceBroadcastReceiverRegistered = false;
     private boolean mLocationModeChangeReceiverRegistered = false;
@@ -87,8 +78,6 @@ public class BackgroundGeolocationFacade {
 
         logger = LoggerManager.getLogger(BackgroundGeolocationFacade.class);
         LoggerManager.enableDBLogging();
-
-        this.permissions = android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q ? PERMISSIONS_29 : PERMISSIONS_21;
 
         logger.info("Initializing plugin");
 

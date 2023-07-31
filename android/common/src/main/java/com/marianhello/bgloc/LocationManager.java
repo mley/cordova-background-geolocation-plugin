@@ -14,7 +14,9 @@ import com.github.jparkie.promise.Promise;
 import com.github.jparkie.promise.Promises;
 import com.intentfilter.androidpermissions.PermissionManager;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -23,22 +25,11 @@ public class LocationManager {
     private Context mContext;
     private static LocationManager mLocationManager;
 
-    public static final String[] PERMISSIONS_21 = {
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
-    };
 
-    public static final String[] PERMISSIONS_29 = {
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACTIVITY_RECOGNITION
-    };
-
-    private String[] permissions;
+    private final String[] permissions = getRequiredPermissions();
 
     private LocationManager(Context context) {
         mContext = context;
-        this.permissions = android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q ? PERMISSIONS_29 : PERMISSIONS_21;
     }
 
     public class PermissionDeniedException extends Exception {}
@@ -144,4 +135,22 @@ public class LocationManager {
 
         }
     }
+
+    public static String[] getRequiredPermissions() {
+        List<String> permissionList = new ArrayList<String>();
+        switch(android.os.Build.VERSION.SDK_INT) { // using fall-through on purpose
+            case 31:
+                permissionList.add( Manifest.permission.START_FOREGROUND_SERVICES_FROM_BACKGROUND);
+            case 29:
+                permissionList.add( Manifest.permission.ACTIVITY_RECOGNITION);
+            case 28:
+                permissionList.add(Manifest.permission.FOREGROUND_SERVICE);
+            default:
+                permissionList.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+                permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION);
+
+        }
+        return permissionList.toArray(new String[0]);
+    }
+
 }

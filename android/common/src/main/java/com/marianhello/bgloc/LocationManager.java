@@ -12,6 +12,7 @@ import android.os.Looper;
 
 import com.github.jparkie.promise.Promise;
 import com.github.jparkie.promise.Promises;
+import com.intentfilter.androidpermissions.models.DeniedPermissions;
 import com.intentfilter.androidpermissions.PermissionManager;
 
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class LocationManager {
             }
 
             @Override
-            public void onPermissionDenied() {
+            public void onPermissionDenied(DeniedPermissions var1) {
                 promise.setError(new PermissionDeniedException());
             }
         });

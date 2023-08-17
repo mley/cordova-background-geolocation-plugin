@@ -140,8 +140,6 @@ public class LocationManager {
     public static String[] getRequiredPermissions() {
         List<String> permissionList = new ArrayList<String>();
         switch(android.os.Build.VERSION.SDK_INT) { // using fall-through on purpose
-            case 31:
-                permissionList.add( Manifest.permission.START_FOREGROUND_SERVICES_FROM_BACKGROUND);
             case 29:
                 permissionList.add( Manifest.permission.ACTIVITY_RECOGNITION);
             case 28:
